@@ -1,5 +1,3 @@
-from rcom_command import *
-
 from tkinter import *
 from tkinter import ttk
 
@@ -43,10 +41,10 @@ class MainApp(Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        APP_FRAMES = (   (StartPage, ()),
-                        (ImportNewJob, ()), 
-                        (CloseValor, ()),
-                        (OpenJob, ()),
+        APP_FRAMES = (  StartPage,
+                        PageOne,
+                        PageTwo,
+                        PageThree,
                         )
 
         self.frames = dict()
@@ -59,8 +57,8 @@ class MainApp(Tk):
 
     def add_frames(self, container, FrameSet):
         for F in FrameSet:
-            frame = F[0](container, self)
-            self.frames[F[0]] = frame
+            frame = F(container, self)
+            self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
 
@@ -76,13 +74,13 @@ class StartPage(Frame):
         label.pack(padx=10, pady=10)
         setup_shared_buttons(self, controller)
 
-class ImportNewJob(Frame):
+class PageOne(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, background=mainbg)
         label = Label(self, text="Open Valor", font=LARGE_FONT, bg=mainbg, fg='white')
         label.pack(padx=10, pady=10)
         setup_shared_buttons(self, controller)
-        open_valor_button = Button(self, text="Go To MAIN PAGE", 
+        open_valor_button = Button(self, text="Do A Thing!", 
                                     command=startvalor_append, 
                                     width=main_button_width,
                                     height=main_button_height,
@@ -91,7 +89,7 @@ class ImportNewJob(Frame):
         open_valor_button.pack(padx=10, pady=10, side=RIGHT, fill=BOTH, expand=False)
 
 
-class CloseValor(Frame):
+class PageTwo(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, background=mainbg)
         label = Label(self, text="Close Valor", font=LARGE_FONT, bg=mainbg, fg='white')
@@ -99,7 +97,7 @@ class CloseValor(Frame):
         setup_shared_buttons(self, controller)
 
 
-class OpenJob(Frame):
+class PageThree(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent, background=mainbg)
         label = Label(self, text="Open A Job", font=LARGE_FONT, bg=mainbg, fg='white')
@@ -118,14 +116,14 @@ def setup_shared_buttons(self, controller):
     main_page_button.pack(  padx=10, pady=10, side=TOP, fill=BOTH, expand=True  )
 
     button1 = Button(   self, text = "1 - Open Valor", 
-                        command = startvalor,  # lambda: controller.show_frame(OpenValor), 
+                        command = lambda: controller.show_frame(PageOne), 
                         width = main_button_width,
                         height = main_button_height,    )
 
     button1.pack(   padx=10, pady=10, side=TOP, fill=BOTH, expand=True  )
 
     button2 = Button(   self, text = "2 - Close Valor", 
-                        command = killvalor,  # lambda: controller.show_frame(CloseValor), 
+                        command = lambda: controller.show_frame(PageTwo), 
                         width = main_button_width,
                         height = main_button_height,    )
 
@@ -139,7 +137,7 @@ def setup_shared_buttons(self, controller):
     button3.pack(   padx=10, pady=10, side=TOP, fill=BOTH, expand=True  )
     
     button4 = Button(   self, text="4 - Import New Job", 
-                        command = lambda: controller.show_frame(ImportNewJob), 
+                        command = lambda: controller.show_frame(PageThree), 
                         width = main_button_width,
                         height = main_button_height,    )
 
@@ -155,5 +153,5 @@ def setup_shared_buttons(self, controller):
 
 
 app = MainApp()
-app.attributes("-topmost", True)
+app.attributes("-topmost", True)  # keeps window on top of all other windows
 app.mainloop()
